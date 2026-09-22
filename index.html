@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Wiifu ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #ffe6ea 0%, #ffc3a0 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden; 
+            color: #333;
+            text-align: center;
+        }
+        
+        /* Floating Hearts & Emojis */
+        .floating-item {
+            position: fixed;
+            top: -10vh;
+            font-size: 1.8rem;
+            animation: fall linear forwards;
+            z-index: 0;
+            opacity: 0.7;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+        
+        /* Pages */
+        .page {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .active-page { display: flex; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Texts & Boxes */
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #d63031;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(214, 48, 49, 0.3);
+            padding: 0 10px;
+        }
+        .shayari-box {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 35px rgba(214, 48, 49, 0.15);
+            max-width: 650px;
+            margin-bottom: 30px;
+            width: 90%;
+        }
+        .shayari-box p { font-size: 1.25rem; line-height: 1.8; color: #b33939; font-weight: 600; }
+
+        /* Contract List */
+        .contract-list { text-align: left; margin: 20px 0; font-size: 1.1rem; color: #d63031; font-weight: bold; }
+        .contract-list li { margin-bottom: 15px; list-style-type: '✅ '; }
+
+        /* Buttons */
+        button {
+            background: linear-gradient(45deg, #ff4757, #ff6b81);
+            color: white; border: none; padding: 15px 35px; font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif; border-radius: 30px; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.5); transition: all 0.3s ease; margin: 10px; font-weight: 600; border: 2px solid white;
+        }
+        button:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 12px 25px rgba(255, 71, 87, 0.7); }
+        .pulse-btn { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 8px 20px rgba(255, 71, 87, 0.5); } 50% { transform: scale(1.08); box-shadow: 0 15px 30px rgba(255, 71, 87, 0.8); } 100% { transform: scale(1); box-shadow: 0 8px 20px rgba(255, 71, 87, 0.5); } }
+
+        /* Punishment Text Buttons */
+        .punishment-btn { background: #fff; color: #ff4757; border: 2px solid #ff4757; display: block; width: 90%; max-width: 400px; margin: 10px auto; font-size: 1.1rem; text-align: left; padding: 12px 20px; }
+        .punishment-btn:hover { background: #ff4757; color: #fff; }
+
+        /* Action Buttons for Interactive Face */
+        .action-btn { background: #fff; color: #ff4757; font-size: 1.3rem; padding: 10px 20px; border-radius: 20px; border: 2px solid #ff4757; display: inline-block; margin: 10px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .action-btn:hover { background: #ff4757; color: white; }
+
+        /* Funny Runaway Button */
+        #noBtn { position: absolute; background: #747d8c; box-shadow: 0 5px 15px rgba(116, 125, 140, 0.4); transition: left 0.2s ease-out, top 0.2s ease-out; z-index: 100; }
+
+        /* Photo Gallery */
+        .gallery { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
+        .polaroid { background: white; padding: 10px 10px 30px 10px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transform: rotate(-6deg); transition: transform 0.4s; }
+        .polaroid:nth-child(2) { transform: rotate(4deg) scale(1.05); z-index: 2; }
+        .polaroid img { width: 120px; height: 150px; object-fit: cover; border-radius: 4px; }
+
+        /* HUBBY FACE CONTAINER FOR ANIMATION */
+        .hubby-face-container { position: relative; width: 140px; height: 140px; margin: 20px auto; border-radius: 50%; }
+        .hubby-face-container img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid #ff4757; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        
+        /* Cheeks Blush Effect */
+        .cheek { position: absolute; width: 35px; height: 25px; background: rgba(255, 60, 60, 0.7); border-radius: 50%; filter: blur(5px); opacity: 0; transition: opacity 1s; z-index: 5; }
+        .cheek.left { top: 55%; left: 15%; }
+        .cheek.right { top: 55%; right: 15%; }
+        .show-blush { opacity: 1; }
+
+        /* Slap Shake Animation */
+        .shake-it { animation: shake 0.5s ease-in-out; }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-15px) rotate(-10deg); } 50% { transform: translateX(15px) rotate(10deg); } 75% { transform: translateX(-15px) rotate(-10deg); } 100% { transform: translateX(0); } }
+
+        /* Orbiting Stars/Hearts Ring */
+        .orbit-ring { position: absolute; top: -20px; left: 50%; width: 120px; height: 40px; transform: translateX(-50%); display: none; z-index: 10; animation: spinRing 2s linear infinite; }
+        .orbit-item { position: absolute; font-size: 1.5rem; }
+        .item1 { left: 0; top: 0; } .item2 { right: 0; top: 0; } .item3 { left: 50%; top: -15px; transform: translateX(-50%); }
+        @keyframes spinRing { from { transform: translateX(-50%) rotateY(0deg); } to { transform: translateX(-50%) rotateY(360deg); } }
+
+        /* Flying Element (Kiss/Slap) */
+        .flying-action { position: fixed; font-size: 4rem; z-index: 999; pointer-events: none; transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); opacity: 0; }
+
+        #sazaMsgText, #interactiveMsg { display: none; font-size: 1.3rem; color: #d63031; font-weight: bold; margin-top: 15px; font-family: 'Dancing Script', cursive; }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="hearts-container"></div>
+    <div id="flyingAction" class="flying-action"></div>
+
+    <!-- PAGE 0: Entry -->
+    <div id="page0" class="page active-page">
+        <h1>Hello Meri Bhutu... 👻❤️</h1>
+        <div class="shayari-box">
+            <p>Tumhare **Honey** ke paas apni chooti bacha ke liye ek pyara sa surprise hai.<br>Please put your earphones on aur is button pe tap karo.</p>
+        </div>
+        <button class="pulse-btn" onclick="startJourney()">Open My Heart 💖</button>
+    </div>
+
+    <!-- PAGE 1: The Apology -->
+    <div id="page1" class="page">
+        <h1>I'm So Sorry Betu 😔</h1>
+        <div class="shayari-box">
+            <p>
+                "Jab meri Bhutu roti hai, toh is Mimmi ki jaan nikal jaati hai..."
+                <br><br>
+                Kal raat maine tumhara wait ignore kiya aur tumhe akela chhod diya. Manta hoon tumhare is **Hubby** se sabse badi galti hui hai. Meri Wiifu, mujhe maaf kar do na please. 
+            </p>
+        </div>
+        <button onclick="nextPage(2)">Aage dekho 👉</button>
+    </div>
+
+    <!-- PAGE 2: Care & Photos -->
+    <div id="page2" class="page">
+        <h1>My Limitless Love ♾️</h1>
+        <div class="gallery">
+            <div class="polaroid"><img src="pic1.jpg" alt="Us"></div>
+            <div class="polaroid"><img src="pic2.jpg" alt="Her"></div>
+        </div>
+        <div class="shayari-box">
+            <p>
+                "Zindagi ki har subah teri muskaan se shuru ho,<br>
+                Meri har dua mein bas meri fuglu ki khushi ho."
+                <br><br>
+                Tum mere liye sirf ek insaan nahi, meri saans ho. Main promise karta hoon tumhari **Maa**, tumhari **Mumam** tumhe hamesha princess ki tarah safe aur most loved feel karwayegi.
+            </p>
+        </div>
+        <button onclick="nextPage(3)">Thoda smile karo 👉</button>
+    </div>
+
+    <!-- PAGE 3: THE ORIGINAL PUNISHMENT SELECTION -->
+    <div id="page3" class="page">
+        <h1>Choose My Punishment ⚖️🥺</h1>
+        <div class="shayari-box">
+            <p>Galti agar **Hubby** ne ki hai, toh saza bhi Hubby ko hi milni chahiye na! Chalo meri Chooti Bacha, apni pasand ki koi bhi saza choose karo meri liye:</p>
+            
+            <button class="punishment-btn" onclick="selectPunishment('Kisses')">A. 100 Tight Hugs & Kisses 💋</button>
+            <button class="punishment-btn" onclick="selectPunishment('BabuGiri')">B. Lifetime supply of pampering & Momos 🥟</button>
+            <button class="punishment-btn" onclick="selectPunishment('Slap')">C. Mere cheeks pe 2 pyare se thappad 👋</button>
+            
+            <div id="sazaMsgText">Saza Qubool Hai Meri Wiifu! 😍 Moving next...</div>
+        </div>
+    </div>
+
+    <!-- PAGE 4: THE NEW INTERACTIVE SLIDE -->
+    <div id="page4" class="page">
+        <h1>Let's Practice! 🙈</h1>
+        <div class="shayari-box">
+            <p>Jo bhi saza choose ki hai, usko yahan practically apply karke dekhlo mere face pe! 👇</p>
+            
+            <!-- Hubby's Face container -->
+            <div class="hubby-face-container" id="hubbyFaceContainer">
+                <img src="hubby.jpg" id="hubbyImg" alt="My Face">
+                <!-- Blush Elements -->
+                <div class="cheek left" id="leftCheek"></div>
+                <div class="cheek right" id="rightCheek"></div>
+                <!-- Orbiting Ring (Stars/Hearts) -->
+                <div class="orbit-ring" id="orbitRing">
+                    <span class="orbit-item item1" id="orbit1">⭐</span>
+                    <span class="orbit-item item2" id="orbit2">⭐</span>
+                    <span class="orbit-item item3" id="orbit3">⭐</span>
+                </div>
+            </div>
+            
+            <div id="interactiveButtons">
+                <button class="action-btn" onclick="triggerAction('kiss')">Kiss Me 💋</button>
+                <button class="action-btn" onclick="triggerAction('slap')">Slap Me 👋</button>
+            </div>
+            
+            <div id="interactiveMsg"></div>
+        </div>
+    </div>
+
+    <!-- PAGE 5: THE OFFICIAL CONTRACT -->
+    <div id="page5" class="page">
+        <h1>Official Hubby Contract 📜</h1>
+        <div class="shayari-box">
+            <p>Main, tumhara ekdum pagal sa Honey, hosh-o-hawas mein ye kasam khata hoon:</p>
+            <ul class="contract-list">
+                <li>Apni Fuglu ko kabhi late-night wait nahi karwaunga.</li>
+                <li>Galti chahe kisi ki bhi ho, Sorry hamesha main hi bolunga. 😅</li>
+                <li>Bina uski bak-bak sune kabhi so nahi paunga.</li>
+                <li>Jab bhi wo gussa hogi, main cute ban kar usko mana lunga.</li>
+            </ul>
+            <p>Do you accept this contract babu?</p>
+        </div>
+        <button class="pulse-btn" onclick="nextPage(6)">I Accept ✍️💖</button>
+    </div>
+
+    <!-- PAGE 6: PRIVATE & CUTE WARNING -->
+    <div id="page6" class="page">
+        <h1>Ek Cute Si Dhamki 🔫🥰</h1>
+        <div class="shayari-box">
+            <p>
+                Suno meri Betu... agar tumne apni Mimmi ko abhi maaf nahi kiya na, toh jab hum milenge main tumhe itni gud-gudi (tickles) karunga aur tumhare gaalon ko itna pull karunga jab tak tum khud thak kar nahi bolti "Accha baba maaf kiya!" 🤭
+                <br><br>
+                (Tumhari har ek smile pe tumhare Hubby ki jaan basti hai 🥰)
+            </p>
+        </div>
+        <button onclick="nextPage(7)">Hass diya na? Ab aage 👉</button>
+    </div>
+
+    <!-- PAGE 7: The Funny Runaway No Interaction -->
+    <div id="page7" class="page">
+        <h1>Ab Maaf Bhi Kar Do Na? 🥺</h1>
+        <div class="shayari-box">
+            <p>Saza dediya, practical bhi kar liya, contract sign ho gaya, dhamki bhi de di... Ab apne is pagal se **Honey** ko maaf kar do please?</p>
+        </div>
+        <div style="position: relative; width: 100%; height: 120px; display: flex; justify-content: center; align-items: center;">
+            <button class="pulse-btn" onclick="nextPage(8)" id="yesBtn" style="z-index: 5;">Yes, I Forgive You Hubby 💖</button>
+        </div>
+        <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No, Still Angry 😤</button>
+    </div>
+
+    <!-- PAGE 8: Final Limitless Love -->
+    <div id="page8" class="page">
+        <h1>Limitless Love For You ♾️💖</h1>
+        <div class="shayari-box" style="background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); border: none;">
+            <p style="color: #fff; text-shadow: 1px 1px 4px rgba(0,0,0,0.3); font-size: 1.4rem;">
+                "Jab tak yeh dil dhadkega, isme dharkan sirf tumhari hogi.<br>
+                Maine tumhe rulaya zaroor hai, par tumhari is **Mimmi** ki aakhiri saans tak ibadat sirf meri wiifu ki hogi."
+                <br><br>
+                Thank you for being my safe space. Tumhara **Hubby**, tumhari **Maa**, tumhari **Mumam** hamesha sirf aur sirf tumhara rahega—meri bhutu, meri betu, meri fuglu, meri chooti bacha! I LOVE YOU BEYOND INFINITY! ✨
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Floating Background Hearts
+        function createItem(emoji = '❤️') {
+            const item = document.createElement('div');
+            item.classList.add('floating-item');
+            item.innerHTML = emoji;
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.animationDuration = Math.random() * 3 + 3 + 's'; 
+            document.getElementById('hearts-container').appendChild(item);
+            setTimeout(() => { item.remove(); }, 5000);
+        }
+        setInterval(() => createItem('❤️'), 400);
+
+        function startJourney() {
+            const music = document.getElementById('bgMusic');
+            music.play().catch(e => console.log("Audio play blocked", e));
+            nextPage(1);
+        }
+
+        function nextPage(pageNum) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active-page'));
+            document.getElementById('page' + pageNum).classList.add('active-page');
+
+            if(pageNum === 7) {
+                const noBtn = document.getElementById('noBtn');
+                noBtn.style.position = 'absolute';
+                noBtn.style.left = '50%';
+                noBtn.style.top = '75%';
+                noBtn.style.transform = 'translateX(-50%)';
+            }
+            if(pageNum === 8) {
+                for(let i=0; i<80; i++) {
+                    setTimeout(() => createItem('✨'), i * 15);
+                    setTimeout(() => createItem('💖'), i * 25);
+                }
+            }
+        }
+
+        // ORIGINAL PUNISHMENT SELECTION (PAGE 3)
+        function selectPunishment(type) {
+            const btns = document.querySelectorAll('.punishment-btn');
+            btns.forEach(btn => btn.style.display = 'none');
+            
+            const msg = document.getElementById('sazaMsgText');
+            msg.style.display = 'block';
+
+            let emoji = '💋';
+            if(type === 'BabuGiri') emoji = '🥟';
+            if(type === 'Slap') emoji = '👋';
+
+            for(let i=0; i<20; i++) {
+                setTimeout(() => createItem(emoji), i * 50);
+            }
+
+            setTimeout(() => {
+                nextPage(4); // Goes to the new Interactive Slide
+            }, 2500);
+        }
+
+        // NEW INTERACTIVE FACE FUNCTION (PAGE 4)
+        function triggerAction(actionType) {
+            // Hide the buttons so she can only click once
+            document.getElementById('interactiveButtons').style.display = 'none';
+            
+            const faceContainer = document.getElementById('hubbyFaceContainer');
+            const msg = document.getElementById('interactiveMsg');
+            const flyingEmoji = document.getElementById('flyingAction');
+            const orbitRing = document.getElementById('orbitRing');
+            const leftCheek = document.getElementById('leftCheek');
+            const rightCheek = document.getElementById('rightCheek');
+
+            // Find face position dynamically
+            const faceRect = faceContainer.getBoundingClientRect();
+            const startX = window.innerWidth / 2;
+            const startY = window.innerHeight; // comes from bottom
+            const endX = faceRect.left + (faceRect.width / 2);
+            const endY = faceRect.top + (faceRect.height / 2);
+
+            // Prepare Flying Emoji
+            flyingEmoji.innerHTML = actionType === 'slap' ? '👋' : '💋';
+            flyingEmoji.style.left = startX - 30 + 'px'; 
+            flyingEmoji.style.top = startY + 'px';
+            flyingEmoji.style.opacity = '1';
+
+            // Wait a split second, then fly it to the face!
+            setTimeout(() => {
+                flyingEmoji.style.left = endX - 30 + 'px';
+                flyingEmoji.style.top = endY - 30 + 'px';
+            }, 100);
+
+            // When it hits the face (0.6s transition)
+            setTimeout(() => {
+                flyingEmoji.style.opacity = '0'; // Hide the flying emoji
+
+                if (actionType === 'slap') {
+                    // SLAP EFFECT
+                    faceContainer.classList.add('shake-it');
+                    msg.innerHTML = "Ouch! 😵 Par saza qubool hai meri Wiifu!";
+                    msg.style.display = 'block';
+                    
+                    document.getElementById('orbit1').innerHTML = '⭐';
+                    document.getElementById('orbit2').innerHTML = '💫';
+                    document.getElementById('orbit3').innerHTML = '⭐';
+                    orbitRing.style.display = 'block';
+
+                    for(let i=0; i<15; i++) setTimeout(() => createItem('👋'), i * 100);
+
+                } else if (actionType === 'kiss') {
+                    // KISS EFFECT
+                    leftCheek.classList.add('show-blush');
+                    rightCheek.classList.add('show-blush');
+                    msg.innerHTML = "Awww 🥰 I love you too meri Chooti Bacha!";
+                    msg.style.display = 'block';
+                    
+                    document.getElementById('orbit1').innerHTML = '❤️';
+                    document.getElementById('orbit2').innerHTML = '💖';
+                    document.getElementById('orbit3').innerHTML = '❤️';
+                    orbitRing.style.display = 'block';
+
+                    for(let i=0; i<15; i++) setTimeout(() => createItem('💋'), i * 100);
+                }
+
+                // Move to next page automatically after enjoying the animation
+                setTimeout(() => {
+                    nextPage(5); // Goes to Contract Page
+                }, 3500); 
+                
+            }, 700);
+        }
+
+        // Runaway Button (PAGE 7)
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            noBtn.style.transform = 'none';
+            noBtn.style.position = 'fixed'; 
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+    </script>
+</body>
+</html>
